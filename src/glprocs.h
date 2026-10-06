@@ -16,6 +16,9 @@ typedef std::ptrdiff_t GLsizeiptr;
 #ifndef GL_DYNAMIC_DRAW
 #define GL_DYNAMIC_DRAW 0x88E8
 #endif
+#ifndef GL_CLAMP_TO_EDGE
+#define GL_CLAMP_TO_EDGE 0x812F
+#endif
 
 typedef void (APIENTRY* PFN_GenBuffers)(GLsizei, GLuint*);
 typedef void (APIENTRY* PFN_BindBuffer)(GLenum, GLuint);
