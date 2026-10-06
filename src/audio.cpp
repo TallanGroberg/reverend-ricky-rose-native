@@ -273,8 +273,8 @@ bool AudioEngine::init() {
       return false;
     }
   }
-  HRESULT hr = CoCreateInstance(CLSID_MMDeviceEnumerator, nullptr, CLSCTX_ALL,
-                                IID_IMMDeviceEnumerator, (void**)&im.enumerator);
+  HRESULT hr = CoCreateInstance(__uuidof(MMDeviceEnumerator), nullptr, CLSCTX_ALL,
+                                __uuidof(IMMDeviceEnumerator), (void**)&im.enumerator);
   if (FAILED(hr) || !im.enumerator) {
     im.error = hrError("Create device enumerator", hr);
     safeRelease(im.enumerator);
