@@ -5,6 +5,7 @@
 #define NOMINMAX
 #include <windows.h>
 #include <commdlg.h>
+#include <shellapi.h>
 #include <algorithm>
 #include <chrono>
 #include <cstdio>
@@ -531,7 +532,7 @@ static void glfwError(int code, const char* desc) {
   fprintf(stderr, "GLFW error %d: %s\n", code, desc ? desc : "");
 }
 
-int main(int argc, char** argv) {
+static int runMain(int argc, char** argv) {
   std::string snapshotPath, settingsPath;
   int snapW = 960, snapH = 540;
   bool carveTest = false;
@@ -732,4 +733,20 @@ int main(int argc, char** argv) {
   glfwDestroyWindow(window);
   glfwTerminate();
   return 0;
+}
+
+// Windows entry point: the app is built with the WIN32 subsystem, so
+// provide wWinMain and forward the command line to runMain as UTF-8.
+int WINAPI wWinMain(HINSTANCE, HINSTANCE, PWSTR, int) {
+  int argc = 0;
+  LPWSTR* wargv = CommandLineToArgvW(GetCommandLineW(), &argc);
+  std::vector<std::string> utf8;
+  std::vector<char*> argv;
+  if (wargv) {
+    for (int i = 0; i < argc; i++) utf8.push_back(wsToUtf8(wargv[i]));
+    for (auto& s : utf8) argv.push_back(s.data());
+  }
+  int rc = runMain(argc, argv.empty() ? nullptr : argv.data());
+  if (wargv) LocalFree(wargv);
+  return rc;
 }
