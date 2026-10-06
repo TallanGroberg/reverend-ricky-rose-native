@@ -1,0 +1,52 @@
+name: Build native CUDA edition
+
+# Builds the Windows native build on a hosted runner (compile only: the
+# runners have no NVIDIA GPU, so running the app is verified on the real
+# RTX 5090 machine). Tag a release like v1.0.0 to attach the zip.
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build:
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install CUDA Toolkit 12.8
+        uses: Jimver/cuda-toolkit@v0.2.30
+        with:
+          cuda: "12.8.0"
+          method: network
+          sub-packages: '["nvcc", "cudart"]'
+
+      - name: Configure
+        run: cmake -S . -B build -G "Visual Studio 17 2022" -A x64
+
+      - name: Build
+        run: cmake --build build --config Release
+
+      - name: Package
+        shell: pwsh
+        run: |
+          $exe = Get-ChildItem -Path build -Recurse -Filter "*.exe" | Where-Object { $_.Name -like "*Dance Party Visuals*" } | Select-Object -First 1
+          if (-not $exe) { throw "Built exe not found" }
+          $stage = "dist/Reverend Ricky Rosè's Dance Party Visuals"
+          New-Item -ItemType Directory -Force -Path $stage | Out-Null
+          Copy-Item $exe.FullName -Destination $stage
+          Compress-Archive -Path $stage -DestinationPath "Reverend-Ricky-Rose-Dance-Party-Visuals-Native-Windows-x64.zip"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: native-windows-x64
+          path: Reverend-Ricky-Rose-Dance-Party-Visuals-Native-Windows-x64.zip
+
+      - name: Attach to release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: Reverend-Ricky-Rose-Dance-Party-Visuals-Native-Windows-x64.zip
