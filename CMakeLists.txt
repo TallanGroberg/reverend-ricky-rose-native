@@ -13,6 +13,9 @@ set(CMAKE_CUDA_ARCHITECTURES 120)
 set(CMAKE_CUDA_RUNTIME_LIBRARY Static)
 set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
+# Defines the CUDA:: imported targets (cudart_static below).
+find_package(CUDAToolkit REQUIRED)
+
 include(FetchContent)
 FetchContent_Declare(glfw
   GIT_REPOSITORY https://github.com/glfw/glfw.git
@@ -45,7 +48,7 @@ set_target_properties(RickyRose PROPERTIES
   OUTPUT_NAME "Reverend Ricky Rosè's Dance Party Visuals"
   CUDA_SEPARABLE_COMPILATION OFF)
 target_include_directories(RickyRose PRIVATE src)
-target_link_libraries(RickyRose PRIVATE imgui glfw opengl32 ole32 comdlg32 CUDA::cudart)
+target_link_libraries(RickyRose PRIVATE imgui glfw opengl32 ole32 comdlg32 CUDA::cudart_static)
 target_compile_options(RickyRose PRIVATE
   $<$<COMPILE_LANGUAGE:CXX>:/utf-8 /W3 /permissive->
   $<$<COMPILE_LANGUAGE:CUDA>:-use_fast_math --ptxas-options=-v>)
