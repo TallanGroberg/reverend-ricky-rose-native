@@ -48,7 +48,7 @@ set_target_properties(RickyRose PROPERTIES
   OUTPUT_NAME "Reverend Ricky Rosè's Dance Party Visuals"
   CUDA_SEPARABLE_COMPILATION OFF)
 target_include_directories(RickyRose PRIVATE src)
-target_link_libraries(RickyRose PRIVATE imgui glfw opengl32 ole32 uuid comdlg32 CUDA::cudart_static)
+target_link_libraries(RickyRose PRIVATE imgui glfw opengl32 ole32 uuid comdlg32 shell32 CUDA::cudart_static)
 target_compile_options(RickyRose PRIVATE
   $<$<COMPILE_LANGUAGE:CXX>:/utf-8 /W3 /permissive->
   $<$<COMPILE_LANGUAGE:CUDA>:-use_fast_math --ptxas-options=-v>)
