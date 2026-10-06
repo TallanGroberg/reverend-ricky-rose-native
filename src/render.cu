@@ -4,6 +4,7 @@
 #include "render.h"
 #include "fractal.cuh"
 
+#include <windows.h>
 #include <cuda_runtime.h>
 #include <gl/GL.h>
 #include <cuda_gl_interop.h>
