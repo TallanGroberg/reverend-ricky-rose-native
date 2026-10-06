@@ -21,7 +21,7 @@ jobs:
         with:
           cuda: "12.8.0"
           method: network
-          sub-packages: '["nvcc", "cudart"]'
+          sub-packages: '["nvcc", "cudart", "visual_studio_integration"]'
 
       - name: Configure
         run: cmake -S . -B build -G "Visual Studio 17 2022" -A x64
