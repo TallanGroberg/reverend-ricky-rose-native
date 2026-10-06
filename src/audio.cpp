@@ -1,6 +1,7 @@
 #include "audio.h"
 
 #include <initguid.h>
+#define NOMINMAX
 #include <windows.h>
 #include <audioclient.h>
 #include <mmdeviceapi.h>

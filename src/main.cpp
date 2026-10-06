@@ -2,6 +2,7 @@
 // Full parity build: same controls, same settings files, same exports as
 // the Electron build, with the raymarcher running as a CUDA kernel.
 
+#define NOMINMAX
 #include <windows.h>
 #include <commdlg.h>
 #include <algorithm>
@@ -22,6 +23,7 @@
 
 #include "params.h"
 #include "render.h"
+#include "glprocs.h"
 #include "audio.h"
 #include "exports.h"
 

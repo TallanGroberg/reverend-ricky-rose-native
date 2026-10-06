@@ -1,5 +1,5 @@
-#include "glprocs.h"
 #include <windows.h>
+#include "glprocs.h"
 
 PFN_GenBuffers pglGenBuffers = nullptr;
 PFN_BindBuffer pglBindBuffer = nullptr;
